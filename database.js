@@ -9,7 +9,7 @@ const db = new Database('user.db');
 // Is the database initialized or do we need to initialize it?
 const stmt = db.prepare(`SELECT name FROM sqlite_master WHERE type='table' and name='userinfo';`);
 let row = stmt.get();
-if (row === undefined) {
+if (row === undefined) { 
 // Echo information about what you are doing to the console.
     console.log('Your database appears to be empty. I will initialize it now.');
 // Set a const that will contain your SQL commands to initialize the database.
