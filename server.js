@@ -24,14 +24,14 @@ app.get("/app/", (req, res, next) => {
 // Define other CRUD API endpoints using express.js and better-sqlite3
 
 // CREATE a new user (HTTP method POST) at endpoint /app/new/
-app.post("/app/new", (req, res) => {
+app.post("/app/new/", (req, res) => {
 	const stmt = db.prepare("INSERT INTO userinfo (user, pass) VALUES(?, ?)");
 	const info = stmt.run(req.body.user, req.body.pass);  
-	res.status(201).send({"message": + info.changes + " record created: ID " + info.lastInsertRowid + " (201)"}); 
+	res.status(201).json({"message": + info.changes + " record created: ID " + info.lastInsertRowid + " (201)"}); 
 }); 
 
 // READ a list of all users (HTTP method GET) at endpoint /app/users/
-app.get("/app/users", (req, res) => {	
+app.get("/app/users/", (req, res) => {	
 	const stmt = db.prepare("SELECT * FROM userinfo").all();
 	res.status(200).json(stmt);
 });
@@ -46,7 +46,7 @@ app.get("/app/user/:id", (req, res) => {
 app.patch("/app/update/user/:id", (req, res) => {
 	const stmt = db.prepare("UPDATE userinfo SET user = COALESCE(?,user), pass = COALESCE(?,pass) WHERE id = ?"); 
 	const info = stmt.run(req.body.user, req.body.pass, req.params.id); 
-	res.status(200).send({"message":"1 record updated: ID " + req.params.id + " (200)"})
+	res.status(200).json({"message":"1 record updated: ID " + req.params.id + " (200)"})
 }); 
 
 // DELETE a single user (HTTP method DELETE) at endpoint /app/delete/user/:id
@@ -63,8 +63,10 @@ app.use(function(req, res){
 });
 
 // Tell STDOUT that the server is stopped 
+/* 
 process.on('SIGTERM', () => {
 	server.close(() => {
 		console.log('Server stopped.'); 
 	}); 
-}); 
+});  
+*/
